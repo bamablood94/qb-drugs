@@ -31,7 +31,8 @@ RegisterNetEvent('qb-drugs:server:sellCornerDrugs', function(item, amount, price
         local hasItem = Player.Functions.GetItemByName(item)
         local AvailableDrugs = {}
         if hasItem.amount >= amount then
-            TriggerClientEvent('QBCore:Notify', src, Lang:t("success.offer_accepted"), 'success')
+            --TriggerClientEvent('QBCore:Notify', src, Lang:t("success.offer_accepted"), 'success')
+            TriggerClientEvent('okokNotify:Alert', src, 'Offer Accepted', Lang:t('success.offer_accepted'), 1500, 'success')
             Player.Functions.RemoveItem(item, amount)
             Player.Functions.AddMoney('cash', price, "sold-cornerdrugs")
             TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], "remove")

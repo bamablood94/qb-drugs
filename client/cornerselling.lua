@@ -20,19 +20,23 @@ RegisterNetEvent('qb-drugs:client:cornerselling', function(data)
                 if not cornerselling then
                     cornerselling = true
                     LocalPlayer.state:set("inv_busy", true, true)
-                    QBCore.Functions.Notify(Lang:t("info.started_selling_drugs"))
+                    --QBCore.Functions.Notify(Lang:t("info.started_selling_drugs"))
+                    exports['okokNotify']:Alert('Started Selling', Lang:t('info.started_selling_drugs'), 1500, 'info')
                     startLocation = GetEntityCoords(PlayerPedId())
                 else
                     cornerselling = false
                     LocalPlayer.state:set("inv_busy", false, true)
-                    QBCore.Functions.Notify(Lang:t("info.stopped_selling_drugs"))
+                    --QBCore.Functions.Notify(Lang:t("info.stopped_selling_drugs"))
+                    exports['okokNotify']:Alert('Stopped Selling', Lang:t('info.stopped_selling_drugs'), 1500, 'info')
                 end
             else
-                QBCore.Functions.Notify(Lang:t("error.has_no_drugs"), 'error')
+                --QBCore.Functions.Notify(Lang:t("error.has_no_drugs"), 'error')
+                exports['okokNotify']:Alert('No Drugs', Lang:t('error.has_no_drugs'), 1500, 'warning')
                 LocalPlayer.state:set("inv_busy", false, true)
             end
         else
-            QBCore.Functions.Notify(Lang:t("error.not_enough_police", {polices = Config.MinimumDrugSalePolice}), "error")
+            --QBCore.Functions.Notify(Lang:t("error.not_enough_police", {polices = Config.MinimumDrugSalePolice}), "error")
+            exports['okokNotify']:Alert('Not Enough Police', Lang:t('error.not_enough_police', {polices = Config.MinimumDrugSalePolice}), 2500, 'error')
         end
     end)
 end)
@@ -44,7 +48,8 @@ end)
 RegisterNetEvent('qb-drugs:client:refreshAvailableDrugs', function(items)
     availableDrugs = items
     if #availableDrugs <= 0 then
-        QBCore.Functions.Notify(Lang:t("error.no_drugs_left"), 'error')
+        --QBCore.Functions.Notify(Lang:t("error.no_drugs_left"), 'error')
+        exports['okokNotify']:Alert('No Drugs', Lang:t('error.no_drugs_left'), 1500, 'warning')
         cornerselling = false
         LocalPlayer.state:set("inv_busy", false, true)
     end
@@ -74,7 +79,8 @@ local function loadAnimDict(dict)
 end
 
 local function toFarAway()
-    QBCore.Functions.Notify(Lang:t("error.too_far_away"), 'error')
+    --QBCore.Functions.Notify(Lang:t("error.too_far_away"), 'error')
+    exports['okokNotify']:Alert('Too Far Away', Lang:t('error.too_far_away'), 1500, 'warning')
     LocalPlayer.state:set("inv_busy", false, true)
     cornerselling = false
     hasTarget = false
@@ -171,7 +177,8 @@ local function SellToPed(ped)
             pedDist = #(coords - pedCoords)
             if getRobbed == 18 or getRobbed == 9 then
                 TriggerServerEvent('qb-drugs:server:robCornerDrugs', availableDrugs[drugType].item, bagAmount)
-                QBCore.Functions.Notify(Lang:t("info.has_been_robbed", {bags = bagAmount, drugType = availableDrugs[drugType].label}))
+                --QBCore.Functions.Notify(Lang:t("info.has_been_robbed", {bags = bagAmount, drugType = availableDrugs[drugType].label}))
+                exports['okokNotify']:Alert('Robbed!', Lang:t('info.has_been_robbed', {bags = bagAmount, drugType = availableDrugs[drugType].label}), 3000, 'warning')
                 stealingPed = ped
                 stealData = {
                     item = availableDrugs[drugType].item,
@@ -212,7 +219,8 @@ local function SellToPed(ped)
                     end
 
                     if IsControlJustPressed(0, 47) then
-                        QBCore.Functions.Notify(Lang:t("error.offer_declined"), 'error')
+                        --QBCore.Functions.Notify(Lang:t("error.offer_declined"), 'error')
+                        exports['okokNotify']:Alert('Offer Declined', Lang:t('error.offer_declined'), 1500, 'error')
                         hasTarget = false
                         SetPedKeepTask(ped, false)
                         SetEntityAsNoLongerNeeded(ped)

@@ -79,14 +79,16 @@ CreateThread(function()
                                         }, {}, {}, function() -- Done
                                             isHealingPerson = false
                                             StopAnimTask(PlayerPedId(), healAnimDict, "exit", 1.0)
-                                            QBCore.Functions.Notify(Lang:t("success.helped_player"), "success")
+                                            --QBCore.Functions.Notify(Lang:t("success.helped_player"), "success")
+                                            exports['okokNotify']:Alert('Helped Player', Lang:t('success.helped_player'), 1500, 'success')
                                             TriggerServerEvent("hospital:server:RevivePlayer", playerId, true)
                                         end, function() -- Cancel
                                             isHealingPerson = false
                                             StopAnimTask(PlayerPedId(), healAnimDict, "exit", 1.0)
                                         end)
                                     else
-                                        QBCore.Functions.Notify(Lang:t("error.no_player_nearby"), "error")
+                                        --QBCore.Functions.Notify(Lang:t("error.no_player_nearby"), "error")
+                                        exports['okokNotify']:Alert('No One Nearby', Lang:t('error.no_player_nearby'), 1500, 'error')
                                     end
                                 else
                                     if waitingDelivery == nil then
@@ -210,7 +212,8 @@ function knockDoorAnim(home)
         Wait(3500)
         TaskPlayAnim(PlayerPed, knockAnimLib, "exit", 3.0, 3.0, -1, 1, 0, false, false, false)
         Wait(1000)
-        QBCore.Functions.Notify(Lang:t("info.no_one_home"), 'primary', 3500)
+        --QBCore.Functions.Notify(Lang:t("info.no_one_home"), 'primary', 3500)
+        exports['okokNotify']:Alert('No One Home', Lang:t('info.no_one_home'), 3500, 'info')
     end
 end
 
@@ -266,7 +269,8 @@ end
 
 function setMapBlip(x, y)
     SetNewWaypoint(x, y)
-    QBCore.Functions.Notify(Lang:t("success.route_has_been_set"), 'success');
+    --QBCore.Functions.Notify(Lang:t("success.route_has_been_set"), 'success');
+    exports['okokNotify']:Alert('GPS', Lang:t('success.route_has_been_set'), 1500, 'success');
 end
 
 RegisterNetEvent('qb-drugs:client:setLocation', function(locationData)
@@ -274,7 +278,8 @@ RegisterNetEvent('qb-drugs:client:setLocation', function(locationData)
         activeDelivery = locationData
     else
         setMapBlip(activeDelivery["coords"]["x"], activeDelivery["coords"]["y"])
-        QBCore.Functions.Notify(Lang:t("error.pending_delivery"), 'error')
+        --QBCore.Functions.Notify(Lang:t("error.pending_delivery"), 'error')
+        exports['okokNotify']:Alert('Pending Delivery', Lang:t('error.pending_delivery'), 1500, 'error')
         return
     end
 
@@ -448,5 +453,6 @@ end)
 RegisterNetEvent('qb-drugs:client:GotoDealer', function(DealerData)
     local ped = PlayerPedId()
     SetEntityCoords(ped, DealerData["coords"]["x"], DealerData["coords"]["y"], DealerData["coords"]["z"])
-    QBCore.Functions.Notify(Lang:t("success.teleported_to_dealer", {dealerName = DealerData["name"]}), 'success')
+    --QBCore.Functions.Notify(Lang:t("success.teleported_to_dealer", {dealerName = DealerData["name"]}), 'success')
+    exports['okokNotify']:Alert('Teleported', Lang:t('success.teleported_to_dealer', {dealerName = DealerData['name']}), 2500, 'success')
 end)
